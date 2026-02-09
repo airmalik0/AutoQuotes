@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import (
     BigInteger,
+    DateTime,
     Enum,
     ForeignKey,
     Integer,
@@ -63,7 +64,7 @@ class User(Base):
         Enum(LanguageEnum), default=LanguageEnum.ru
     )
     created_at: Mapped[datetime] = mapped_column(
-        default=lambda: datetime.now(timezone.utc)
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
 
     seller_brands: Mapped[list["SellerBrand"]] = relationship(
@@ -98,10 +99,10 @@ class Request(Base):
         Enum(RequestStatusEnum), default=RequestStatusEnum.active
     )
     created_at: Mapped[datetime] = mapped_column(
-        default=lambda: datetime.now(timezone.utc)
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
     expires_at: Mapped[datetime] = mapped_column(
-        default=lambda: datetime.now(timezone.utc) + timedelta(hours=48)
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc) + timedelta(hours=48)
     )
 
     client: Mapped["User"] = relationship(back_populates="requests")
@@ -122,7 +123,7 @@ class RequestPhoto(Base):
     )
     file_path: Mapped[str] = mapped_column(String, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
-        default=lambda: datetime.now(timezone.utc)
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
 
     request: Mapped["Request"] = relationship(back_populates="photos")
@@ -142,7 +143,7 @@ class Offer(Base):
     )
     comment: Mapped[str | None] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(
-        default=lambda: datetime.now(timezone.utc)
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
 
     request: Mapped["Request"] = relationship(back_populates="offers")
