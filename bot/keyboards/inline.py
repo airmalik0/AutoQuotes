@@ -1,7 +1,8 @@
 import json
 
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 
+from bot.config import settings
 from bot.locales import t
 
 _BRANDS: list[str] = []
@@ -16,6 +17,19 @@ def _get_brands() -> list[str]:
         with open(cars_path) as f:
             _BRANDS = list(json.load(f).keys())
     return _BRANDS
+
+
+def webapp_keyboard(lang: str = "ru") -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=t("find_part", lang),
+                    web_app=WebAppInfo(url=settings.WEBAPP_URL),
+                )
+            ]
+        ]
+    )
 
 
 def language_keyboard() -> InlineKeyboardMarkup:

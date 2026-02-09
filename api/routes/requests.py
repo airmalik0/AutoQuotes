@@ -39,6 +39,9 @@ async def create_request(
                 brand, model, year, part_type, len(init_data), len(photos))
 
     # Validate init_data
+    if not init_data:
+        raise HTTPException(status_code=403, detail="Empty init_data")
+
     user_data = validate_init_data(init_data, settings.BOT_TOKEN)
     if user_data is None:
         logger.error("Invalid init_data (len=%d): %s", len(init_data), init_data[:200])

@@ -8,6 +8,7 @@ from bot.db.models import RoleEnum, User
 from bot.keyboards.inline import (
     my_requests_keyboard,
     request_detail_keyboard,
+    webapp_keyboard,
 )
 from bot.locales import t
 from bot.services._helpers import format_offers_count, time_ago
@@ -25,6 +26,15 @@ async def _get_user_lang(telegram_id: int) -> tuple[User | None, str]:
         user = result.scalar_one_or_none()
         lang = user.language.value if user and user.language else "ru"
         return user, lang
+
+
+# --- "Найти запчасть" → отправляем inline-кнопку с WebApp ---
+@router.message(F.text.in_(["🔍 Найти запчасть", "🔍 Ehtiyot qism topish"]))
+async def on_find_part(message: Message):
+    _, lang = await _get_user_lang(message.from_user.id)
+    await message.answer(
+        t("find_part", lang), reply_markup=webapp_keyboard(lang)
+    )
 
 
 # --- "Мои запросы" ---

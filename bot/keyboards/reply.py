@@ -1,10 +1,8 @@
 from aiogram.types import (
     KeyboardButton,
     ReplyKeyboardMarkup,
-    WebAppInfo,
 )
 
-from bot.config import settings
 from bot.locales import t
 
 
@@ -21,12 +19,7 @@ def contact_keyboard(lang: str = "ru") -> ReplyKeyboardMarkup:
 def client_menu(lang: str = "ru") -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
-            [
-                KeyboardButton(
-                    text=t("find_part", lang),
-                    web_app=WebAppInfo(url=settings.WEBAPP_URL),
-                )
-            ],
+            [KeyboardButton(text=t("find_part", lang))],
             [
                 KeyboardButton(text=t("my_requests", lang)),
                 KeyboardButton(text=t("settings", lang)),
