@@ -1,0 +1,11 @@
+export const CARS: Record<string, string[]> = {
+  "BYD": ["Song Plus", "Han", "Tang", "Seal", "Dolphin", "Chazor 05", "Atto 3", "Song L"],
+  "Chery": ["Tiggo 4 Pro", "Tiggo 7 Pro", "Tiggo 8 Pro", "Tiggo 8 Pro Max", "Arrizo 8"],
+  "Haval": ["H6", "Jolion", "F7", "Dargo", "H9"],
+  "Geely": ["Monjaro", "Coolray", "Atlas Pro", "Emgrand", "Tugella"],
+  "Jetour": ["Dashing", "X70 Plus", "X90 Plus", "T2"],
+  "Changan": ["CS75 Plus", "CS55 Plus", "UNI-T", "UNI-V", "UNI-K"],
+  "Zeekr": ["001", "X", "009"],
+  "Li Auto": ["L7", "L8", "L9", "MEGA"]
+};
+export const YEARS = Array.from({length: 7}, (_, i) => 2025 - i); // 2025..2019

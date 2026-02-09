@@ -1,0 +1,10 @@
+aiogram>=3.4
+fastapi
+uvicorn[standard]
+sqlalchemy[asyncio]
+asyncpg
+python-dotenv
+pydantic-settings
+python-multipart
+alembic
+aiofiles
