@@ -31,15 +31,17 @@ async def create_request(
     year: int = Form(...),
     description: str = Form(...),
     part_type: str = Form(...),
-    init_data: str = Form(...),
+    init_data: str = Form(default=""),
     photos: list[UploadFile] | None = File(default=None),
 ):
     photos = photos or []
+    logger.info("Received request: brand=%s model=%s year=%s part_type=%s init_data_len=%d photos=%d",
+                brand, model, year, part_type, len(init_data), len(photos))
 
     # Validate init_data
     user_data = validate_init_data(init_data, settings.BOT_TOKEN)
     if user_data is None:
-        logger.error("Invalid init_data: %s", init_data[:100])
+        logger.error("Invalid init_data (len=%d): %s", len(init_data), init_data[:200])
         raise HTTPException(status_code=403, detail="Invalid init_data")
 
     telegram_id = user_data.get("id")
