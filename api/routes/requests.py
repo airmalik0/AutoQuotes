@@ -1,8 +1,8 @@
+import logging
 import pathlib
-from typing import Optional
 
 import aiofiles
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, Request as FastAPIRequest, UploadFile
 
 from api.auth import validate_init_data
 from bot.config import settings
@@ -18,6 +18,7 @@ from bot.db.models import (
 
 from sqlalchemy import select
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 UPLOADS_DIR = pathlib.Path(__file__).resolve().parent.parent.parent / "uploads"
@@ -31,11 +32,14 @@ async def create_request(
     description: str = Form(...),
     part_type: str = Form(...),
     init_data: str = Form(...),
-    photos: list[UploadFile] = File(default=[]),
+    photos: list[UploadFile] | None = File(default=None),
 ):
+    photos = photos or []
+
     # Validate init_data
     user_data = validate_init_data(init_data, settings.BOT_TOKEN)
     if user_data is None:
+        logger.error("Invalid init_data: %s", init_data[:100])
         raise HTTPException(status_code=403, detail="Invalid init_data")
 
     telegram_id = user_data.get("id")

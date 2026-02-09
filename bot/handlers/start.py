@@ -73,7 +73,7 @@ async def on_language_chosen(callback: CallbackQuery, state: FSMContext):
         await session.commit()
 
     await state.set_state(RegistrationState.waiting_contact)
-    await callback.message.edit_text(t("share_contact", lang))
+    await callback.message.edit_text(t("choose_language") + " ✅")
     await callback.message.answer(
         t("share_contact", lang), reply_markup=contact_keyboard(lang)
     )
@@ -122,7 +122,7 @@ async def on_role_chosen(callback: CallbackQuery, state: FSMContext):
 
     if role == "client":
         await state.clear()
-        await callback.message.edit_text(t("client_registered", lang))
+        await callback.message.edit_text(t("choose_role", lang, first_name=data.get("first_name", "")) + " ✅")
         await callback.message.answer(
             t("client_registered", lang), reply_markup=client_menu(lang)
         )
@@ -178,9 +178,7 @@ async def on_brands_done(callback: CallbackQuery, state: FSMContext):
 
     await state.clear()
     brands_str = ", ".join(sorted(selected))
-    await callback.message.edit_text(
-        t("seller_registered", lang, brands=brands_str)
-    )
+    await callback.message.edit_text(t("choose_brands", lang) + " ✅")
     await callback.message.answer(
         t("seller_registered", lang, brands=brands_str),
         reply_markup=seller_menu(lang),
